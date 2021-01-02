@@ -4,40 +4,33 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float topForwardSpeed = 100f;
-    [SerializeField] private float topReverseSpeed = 20f;
-    [SerializeField] private float acceleration = 10f;
-    [SerializeField] private float inertialDamping = 0.9f;
-    [SerializeField] private float velocity = 0;
-    [SerializeField] private RectTransform crosshairTransform;
-    public float Velocity 
+
+    [SerializeField] private Vector3 velocity;
+
+    public float VelocityZ 
     {
-        get { return velocity; }
+        get { return velocity.z; }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        float pitch = crosshairTransform.position.y * 1f * Time.deltaTime;
-        float yaw = crosshairTransform.position.x * 0f * Time.deltaTime;
-        float roll = Input.GetAxis("Horizontal") * -100f * Time.deltaTime;
 
-        Vector3 rotations = new Vector3(-pitch, yaw, roll);
-        transform.Rotate(rotations);
+        float pitch = (Input.mousePosition.y - Screen.height * 0.5f) * 10f * Time.deltaTime;
+        float yaw = (Input.mousePosition.x - Screen.width * 0.5f) * 10f * Time.deltaTime;
+        float roll = Input.GetAxis("Roll") * 10f * Time.deltaTime;
 
-        float z = Input.GetAxis("Vertical");
+        Vector3 rotations = new Vector3(-0, roll, 0);
+        transform.Rotate(rotations, Space.Self);
 
-        if (z != 0)
-        {
-            velocity += z * acceleration * Time.deltaTime;
-            velocity = Mathf.Clamp(velocity, -topReverseSpeed, topForwardSpeed);
-        }
-        else
-        {
-            velocity -= velocity * inertialDamping * Time.deltaTime;
-            if (Mathf.Abs(velocity) < 0.01) velocity = 0f; 
-        }
+        print(transform.forward);
 
-        transform.Translate(velocity * transform.forward * Time.deltaTime);
+        velocity.x = Mathf.Lerp(velocity.x, Input.GetAxis("Horizontal") * 30, 10 * Time.deltaTime);
+        velocity.y = Mathf.Lerp(velocity.y, Input.GetAxis("Hover") * 30, 10 * Time.deltaTime);
+        velocity.z = Mathf.Lerp(velocity.z, Input.GetAxis("Vertical") * 100, 10 * Time.deltaTime);
+
+        transform.Translate(velocity.x * transform.right * Time.deltaTime);
+        transform.Translate(velocity.y * transform.up * Time.deltaTime);
+        transform.Translate(velocity.z * transform.forward * Time.deltaTime);
+
     }
 }
