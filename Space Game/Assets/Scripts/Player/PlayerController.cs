@@ -15,22 +15,22 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
-        float pitch = (Input.mousePosition.y - Screen.height * 0.5f) * 10f * Time.deltaTime;
-        float yaw = (Input.mousePosition.x - Screen.width * 0.5f) * 10f * Time.deltaTime;
-        float roll = Input.GetAxis("Roll") * 10f * Time.deltaTime;
+        float pitch = (Input.mousePosition.y - Screen.height * 0.5f) * 1f * Time.deltaTime;
+        float yaw = (Input.mousePosition.x - Screen.width * 0.5f) * 1f * Time.deltaTime;
+        float roll = Input.GetAxis("Roll") * 200f * Time.deltaTime;
 
-        Vector3 rotations = new Vector3(-0, roll, 0);
+        Vector3 rotations = new Vector3(-pitch, yaw, roll);
         transform.Rotate(rotations, Space.Self);
 
-        print(transform.forward);
+
 
         velocity.x = Mathf.Lerp(velocity.x, Input.GetAxis("Horizontal") * 30, 10 * Time.deltaTime);
         velocity.y = Mathf.Lerp(velocity.y, Input.GetAxis("Hover") * 30, 10 * Time.deltaTime);
         velocity.z = Mathf.Lerp(velocity.z, Input.GetAxis("Vertical") * 100, 10 * Time.deltaTime);
 
-        transform.Translate(velocity.x * transform.right * Time.deltaTime);
-        transform.Translate(velocity.y * transform.up * Time.deltaTime);
-        transform.Translate(velocity.z * transform.forward * Time.deltaTime);
+        transform.Translate(velocity.x * Vector3.right * Time.deltaTime);
+        transform.Translate(velocity.y * Vector3.up * Time.deltaTime);
+        transform.Translate(velocity.z * Vector3.forward * Time.deltaTime);
 
     }
 }
