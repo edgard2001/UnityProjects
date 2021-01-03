@@ -16,7 +16,6 @@ public class EnemyController : MonoBehaviour
     {
         Vector3 targetDisplacement = targetTransform.position - transform.position;
         targetDisplacement = transform.InverseTransformDirection(targetDisplacement);
-        print(targetDisplacement);
 
         float targetDistance = targetDisplacement.magnitude;
 
