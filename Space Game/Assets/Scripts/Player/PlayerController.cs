@@ -7,22 +7,18 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private Vector3 velocity;
 
-    public float VelocityZ 
-    {
-        get { return velocity.z; }
-    }
-
-    void Update()
+    void FixedUpdate()
     {
 
         float pitch = (Input.mousePosition.y - Screen.height * 0.5f) * 1f * Time.deltaTime;
         float yaw = (Input.mousePosition.x - Screen.width * 0.5f) * 1f * Time.deltaTime;
         float roll = Input.GetAxis("Roll") * 200f * Time.deltaTime;
 
-        Vector3 rotations = new Vector3(-pitch, yaw, roll);
-        transform.Rotate(rotations, Space.Self);
-
-
+        if (!Input.GetMouseButton(1))
+        {
+            Vector3 rotations = new Vector3(-pitch, yaw, roll);
+            transform.Rotate(rotations, Space.Self);
+        }
 
         velocity.x = Mathf.Lerp(velocity.x, Input.GetAxis("Horizontal") * 30, 10 * Time.deltaTime);
         velocity.y = Mathf.Lerp(velocity.y, Input.GetAxis("Hover") * 30, 10 * Time.deltaTime);
@@ -33,4 +29,5 @@ public class PlayerController : MonoBehaviour
         transform.Translate(velocity.z * Vector3.forward * Time.deltaTime);
 
     }
+
 }
