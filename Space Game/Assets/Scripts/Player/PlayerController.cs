@@ -5,7 +5,10 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 
-    [SerializeField] private Vector3 velocity;
+    [SerializeField] private float maxThrust = 300f;
+    [SerializeField] private float acceleration = 10f;
+    private float currentThrust;
+    private Vector3 velocity;
 
     void FixedUpdate()
     {
@@ -20,11 +23,12 @@ public class PlayerController : MonoBehaviour
             transform.Rotate(rotations, Space.Self);
         }
 
-        velocity.x = Mathf.Lerp(velocity.x, Input.GetAxis("Horizontal") * 30, 10 * Time.deltaTime);
-        velocity.y = Mathf.Lerp(velocity.y, Input.GetAxis("Hover") * 30, 10 * Time.deltaTime);
-        velocity.z = Mathf.Lerp(velocity.z, Input.GetAxis("Vertical") * 100, 10 * Time.deltaTime);
+        currentThrust += Input.GetAxis("Vertical") * 300 * Time.deltaTime;
+        currentThrust = Mathf.Clamp(currentThrust, 0, maxThrust);
 
-        transform.Translate(velocity.x * Vector3.right * Time.deltaTime);
+        velocity.y = Mathf.Lerp(velocity.y, Input.GetAxis("Hover") * 30, 10 * Time.deltaTime);
+        velocity.z = Mathf.Lerp(velocity.z, currentThrust, acceleration * Time.deltaTime);
+
         transform.Translate(velocity.y * Vector3.up * Time.deltaTime);
         transform.Translate(velocity.z * Vector3.forward * Time.deltaTime);
 
