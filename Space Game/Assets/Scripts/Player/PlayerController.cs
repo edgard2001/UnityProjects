@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 velocity;
 
     //health stuff
-    int health = 100;
+    [SerializeField]  private int health = 100;
     public Text healthText;
 
     //thruster rotate?
@@ -21,8 +21,10 @@ public class PlayerController : MonoBehaviour
      void Start()
     {
         Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Confined;
         healthText.text = "Health: " + health.ToString();
     }
+
     void FixedUpdate()
     {
 
