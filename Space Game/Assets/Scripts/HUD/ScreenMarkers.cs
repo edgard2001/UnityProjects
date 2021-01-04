@@ -15,6 +15,9 @@ public class ScreenMarkers : MonoBehaviour
         foreach (GameObject enemy in enemies)
         {
             Vector3 markerPosition = cam.WorldToScreenPoint(enemy.transform.position);
+            Vector3 displacement = enemy.transform.position - cam.transform.position;
+            float distance = displacement.magnitude;
+            string text = Mathf.RoundToInt(distance).ToString();
 
             markerPosition.y = Screen.height - markerPosition.y;
 
@@ -34,6 +37,7 @@ public class ScreenMarkers : MonoBehaviour
             markerPosition.y = Mathf.Clamp(markerPosition.y, 15, Screen.height - 15);
 
             GUI.Label( new Rect(markerPosition.x - 15, markerPosition.y - 15, markerPosition.x + 15, 30), marker);
+            GUI.Label(new Rect(markerPosition.x + 15, markerPosition.y - 15, markerPosition.x + 55, 30), text);
         }
     }
 
