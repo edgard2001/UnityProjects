@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,6 +11,18 @@ public class PlayerController : MonoBehaviour
     private float currentThrust;
     private Vector3 velocity;
 
+    //health stuff
+    int health = 100;
+    public Text healthText;
+
+    //thruster rotate?
+    public Transform leftThruster;
+    public Transform rightThruster;
+     void Start()
+    {
+        Cursor.visible = false;
+        healthText.text = "Health: " + health.ToString();
+    }
     void FixedUpdate()
     {
 
@@ -32,6 +45,16 @@ public class PlayerController : MonoBehaviour
         transform.Translate(velocity.y * Vector3.up * Time.deltaTime);
         transform.Translate(velocity.z * Vector3.forward * Time.deltaTime);
 
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "meteor")
+        {
+            health -= 10;
+            healthText.text = "Health: " + health.ToString();
+            Debug.Log("Hit");
+        }
     }
 
 }
