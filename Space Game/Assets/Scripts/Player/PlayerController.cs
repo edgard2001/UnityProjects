@@ -5,11 +5,14 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    public Rigidbody rb;
 
     [SerializeField] private float maxThrust = 300f;
     [SerializeField] private float acceleration = 10f;
     private float currentThrust;
+
     private Vector3 velocity;
+    private float pitch, yaw, roll;
 
     //health stuff
     [SerializeField]  private int health = 100;
@@ -18,34 +21,46 @@ public class PlayerController : MonoBehaviour
     //thruster rotate?
     public Transform leftThruster;
     public Transform rightThruster;
-     void Start()
+
+    void Start()
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Confined;
+
+        healthText = GameObject.Find("HealthText").GetComponent<Text>();
         healthText.text = "Health: " + health.ToString();
+
+        rb = GetComponent<Rigidbody>();
+        rightThruster = this.transform.GetChild(0).GetChild(6).transform;
+        leftThruster = this.transform.GetChild(0).GetChild(7).transform;
     }
+
+    private void Update()
+    {
+        
+    }
+
 
     void FixedUpdate()
     {
-
-        float pitch = (Input.mousePosition.y - Screen.height * 0.5f) * 1f * Time.deltaTime;
-        float yaw = (Input.mousePosition.x - Screen.width * 0.5f) * 1f * Time.deltaTime;
-        float roll = Input.GetAxis("Roll") * 200f * Time.deltaTime;
+        pitch = (Input.mousePosition.y - Screen.height * 0.5f) * -1f * Time.deltaTime;
+        yaw = (Input.mousePosition.x - Screen.width * 0.5f) * 1f * Time.deltaTime;
+        roll = Input.GetAxis("Roll") * 200f * Time.deltaTime;
 
         if (!Input.GetMouseButton(1))
         {
-            Vector3 rotations = new Vector3(-pitch, yaw, roll);
-            transform.Rotate(rotations, Space.Self);
+            Quaternion rot = Quaternion.AngleAxis(yaw, transform.up) * Quaternion.AngleAxis(pitch, transform.right) * Quaternion.AngleAxis(roll, transform.forward) * transform.rotation;
+            rb.MoveRotation(rot);
         }
 
         currentThrust += Input.GetAxis("Vertical") * 300 * Time.deltaTime;
-        currentThrust = Mathf.Clamp(currentThrust, 0, maxThrust);
-
         velocity.y = Mathf.Lerp(velocity.y, Input.GetAxis("Hover") * 30, 10 * Time.deltaTime);
+
+        currentThrust = Mathf.Clamp(currentThrust, 0, maxThrust);
         velocity.z = Mathf.Lerp(velocity.z, currentThrust, acceleration * Time.deltaTime);
 
-        transform.Translate(velocity.y * Vector3.up * Time.deltaTime);
-        transform.Translate(velocity.z * Vector3.forward * Time.deltaTime);
+        Vector3 worldVelocity = velocity.x * transform.right + velocity.y * transform.up + velocity.z * transform.forward;
+        rb.velocity = worldVelocity;
 
     }
 
@@ -56,6 +71,7 @@ public class PlayerController : MonoBehaviour
             health -= 10;
             healthText.text = "Health: " + health.ToString();
             Debug.Log("Hit");
+            velocity = Vector3.zero;
         }
     }
 

@@ -1,5 +1,19 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!64 &6852710152439546279
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1347447151064149870}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2959467708922500008, guid: 31c693e1e3cd12142bc93a995a3d3b31, type: 3}
 --- !u!1 &6496075597497030725
 GameObject:
   m_ObjectHideFlags: 0
@@ -10,6 +24,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7901874439328278161}
   - component: {fileID: 2899482776416537483}
+  - component: {fileID: 7590541659728294393}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -44,12 +59,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11328a0f13bf5624da65a10ab69fd1e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTransform: {fileID: 0}
-  attackRange: 100
-  velocity: {x: 0, y: 0, z: 0}
-  roll: 0
-  pitch: 0
-  yaw: 0
+  rb: {fileID: 0}
+  enemyTransform: {fileID: 0}
+  attackRange: 300
+  sightRange: 1000
+  chaseSpeed: 300
+  targetInSightRange: 0
+  targetInAttackRange: 0
+  patrolRange: 300
+  patrolSpeed: 50
+--- !u!54 &7590541659728294393
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6496075597497030725}
+  serializedVersion: 2
+  m_Mass: 2000
+  m_Drag: 1
+  m_AngularDrag: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &5482837955172220573
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -126,5 +160,10 @@ PrefabInstance:
 --- !u!4 &2155054114717592813 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5908369074314662512, guid: 746013cf4fa27a343b398f85bd94476a, type: 3}
+  m_PrefabInstance: {fileID: 5482837955172220573}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1347447151064149870 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6820116804449063411, guid: 746013cf4fa27a343b398f85bd94476a, type: 3}
   m_PrefabInstance: {fileID: 5482837955172220573}
   m_PrefabAsset: {fileID: 0}
