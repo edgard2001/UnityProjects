@@ -1,0 +1,4 @@
+repository "Space Game@RCDonut@cloud"
+  path "/"
+    br "/main"
+    co "/main"
